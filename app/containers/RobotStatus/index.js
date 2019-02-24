@@ -12,6 +12,7 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+import socket from 'socket-io';
 import makeSelectRobotStatus from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -25,26 +26,12 @@ import {
 export class RobotStatus extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
-    const onUpdatedRobotStatus = () => {
-      return {
-        leftMotor: {
-          speed: Math.random() * 100,
-        },
-        rightMotor: {
-          speed: Math.random() * 100,
-        },
-        camera: {
-          videoUrl: 'http://192.168.15.36:8000',
-        },
-      };
-    };
 
-    setInterval(() => {
-      const robotState = onUpdatedRobotStatus();
+    socket.on('ROBOT_STATUS_UPDATE', robotState => {
       dispatch(setLeftMotorStatus(robotState.leftMotor));
       dispatch(setRightMotorStatus(robotState.rightMotor));
       dispatch(setCameraStatus(robotState.camera));
-    }, 3000);
+    });
   }
 
   render() {

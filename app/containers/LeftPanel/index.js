@@ -11,11 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import { compose } from 'redux';
 
-import {
-  makeSelectLeftMotor,
-  makeSelectRightMotor,
-  makeSelectCamera,
-} from './selectors';
+import { makeSelectLeftMotor, makeSelectRightMotor } from './selectors';
 import Header from '../../components/Header';
 import Cell from '../../components/Cell';
 import CellSeparator from '../../components/CellSeparator';
@@ -25,32 +21,13 @@ import messages from './messages';
 
 const EMPTY_VALUE = '-';
 const PRIMARY_COLOR = '#2e8aff';
+const BLACK_COLOR = '#000';
 
 /* eslint-disable react/prefer-stateless-function */
 export class LeftPanel extends React.Component {
-  getLeftMotorData() {
-    const { leftMotor } = this.props;
-    const { speed = null } = leftMotor || {};
-
-    return {
-      speedValue: speed,
-      speedLabel: getPercentageLabel(speed),
-    };
-  }
-
-  getRightMotorData() {
-    const { rightMotor } = this.props;
-    const { speed = null } = rightMotor || {};
-
-    return {
-      speedValue: speed,
-      speedLabel: getPercentageLabel(speed),
-    };
-  }
-
   render() {
-    const leftMotor = this.getLeftMotorData();
-    const rightMotor = this.getRightMotorData();
+    const leftMotor = calculateMotorData(this.props.leftMotor);
+    const rightMotor = calculateMotorData(this.props.rightMotor);
 
     return (
       <div id="left-panel">
@@ -62,13 +39,13 @@ export class LeftPanel extends React.Component {
           title={<FormattedMessage {...messages.leftMotorSpeed} />}
           value={leftMotor.speedLabel}
           levelValue={leftMotor.speedValue}
-          levelColor={PRIMARY_COLOR}
+          levelColor={leftMotor.speedColor}
         />
         <Cell
           title={<FormattedMessage {...messages.rightMotorSpeed} />}
           value={rightMotor.speedLabel}
           levelValue={rightMotor.speedValue}
-          levelColor={PRIMARY_COLOR}
+          levelColor={rightMotor.speedColor}
         />
       </div>
     );
@@ -83,6 +60,16 @@ const mapStateToProps = createStructuredSelector({
   leftMotor: makeSelectLeftMotor(),
   rightMotor: makeSelectRightMotor(),
 });
+
+function calculateMotorData(params) {
+  const { speed = null } = params || {};
+
+  return {
+    speedValue: speed,
+    speedLabel: getPercentageLabel(speed),
+    speedColor: speed >= 0 ? PRIMARY_COLOR : BLACK_COLOR,
+  };
+}
 
 function getPercentageLabel(value) {
   return value === null ? EMPTY_VALUE : `${Math.round(value)}%`;

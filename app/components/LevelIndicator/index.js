@@ -9,6 +9,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const DEFAULT_COLOR = '#000';
+const POSITIVE_FLOAT = 'left';
+const NEGATIVE_FLOAT = 'right';
 
 const MainContainer = styled.div`
   width: 100%;
@@ -18,8 +20,8 @@ const MainContainer = styled.div`
 
 const Progress = styled.div`
   height: 100%;
-  -webkit-transition: width 0.5s;
-  transition: width 0.5s;
+  -webkit-transition: width 0.2s;
+  transition: width 0.2s;
 `;
 
 /* eslint-disable react/prefer-stateless-function */
@@ -32,8 +34,9 @@ class LevelIndicator extends React.PureComponent {
     };
 
     const progressStyle = {
-      width: `${value}%`,
-      backgroundColor: `${color}`,
+      float: value >= 0 ? POSITIVE_FLOAT : NEGATIVE_FLOAT,
+      backgroundColor: color,
+      width: `${Math.abs(value)}%`,
     };
 
     return (
@@ -46,7 +49,7 @@ class LevelIndicator extends React.PureComponent {
 
 LevelIndicator.propTypes = {
   value: PropTypes.number,
-  color: PropTypes.string,
+  color: PropTypes.string
 };
 
 export default LevelIndicator;
