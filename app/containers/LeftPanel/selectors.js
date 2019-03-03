@@ -17,6 +17,11 @@ const selectRobotStatusDomain = state => state.get('robotStatus', initialState);
  * Default selector used by RobotStatus
  */
 
+const makeSelectBattery = () =>
+  createSelector(selectRobotStatusDomain, substate => {
+    return substate.toJS().battery;
+  });
+
 const makeSelectLeftMotor = () =>
   createSelector(selectRobotStatusDomain, substate => {
     return substate.toJS().leftMotor;
@@ -27,4 +32,14 @@ const makeSelectRightMotor = () =>
     return substate.toJS().rightMotor;
   });
 
-export { makeSelectLeftMotor, makeSelectRightMotor };
+const makeSelectLocation = () =>
+  createSelector(selectRobotStatusDomain, substate => {
+    return substate.toJS().location;
+  });
+
+export {
+  makeSelectLeftMotor,
+  makeSelectRightMotor,
+  makeSelectBattery,
+  makeSelectLocation,
+};

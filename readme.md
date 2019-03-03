@@ -10,7 +10,7 @@ User interface for [Ground Control](https://github.com/manuelmhtr/ground-control
 
 Screenshot:
 
-![Screenshot](https://s3.amazonaws.com/manuelmhtr.assets/github/ground-control-gui-screen1.png)
+![Screenshot](https://s3.amazonaws.com/manuelmhtr.assets/github/ground-control-gui-screen2.png)
 
 ## Indicators
 

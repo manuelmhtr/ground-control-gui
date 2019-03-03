@@ -17,8 +17,10 @@ import makeSelectRobotStatus from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import {
+  setBatteryStatus,
   setLeftMotorStatus,
   setRightMotorStatus,
+  setLocationStatus,
   setCameraStatus,
 } from './actions';
 
@@ -28,8 +30,10 @@ export class RobotStatus extends React.Component {
     const { dispatch } = this.props;
 
     socket.on('ROBOT_STATUS_UPDATE', robotState => {
+      dispatch(setBatteryStatus(robotState.battery));
       dispatch(setLeftMotorStatus(robotState.leftMotor));
       dispatch(setRightMotorStatus(robotState.rightMotor));
+      dispatch(setLocationStatus(robotState.gps));
       dispatch(setCameraStatus(robotState.camera));
     });
   }
